@@ -28,7 +28,7 @@ namespace TarkovTracker.View.Controllers
 			_logger.LogInformation("Started the application.");
 
 			// run a query
-			//_queryService.GetResult(string.Empty);
+			_queryService.GetResult(string.Empty);
 			
 			// run a search
 			//var result = _searchService.GetSearchResult<Map>("interchange");

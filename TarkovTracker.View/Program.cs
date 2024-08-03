@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using TarkovTracker.Base.DependencyInjection;
+using TarkovTracker.Logic.Services;
 using TarkovTracker.Logic.Services.Interfaces;
 using TarkovTracker.View.Controllers.Interfaces;
 
@@ -26,10 +27,17 @@ namespace TarkovTracker.View
 
 			// add TarkovTracker services from Services and View using reflection
 			serviceCollection.AddServicesFromAssembly(Assembly.GetAssembly(typeof(IApplicationController)));
-			serviceCollection.AddServicesFromAssembly(Assembly.GetAssembly(typeof(ISearchService)));
+			serviceCollection.AddServicesFromAssembly(Assembly.GetAssembly(typeof(IQueryService)));
+			serviceCollection.AddHttpClient(
+				"QueryClient",
+				client => 
+				{
+					client.DefaultRequestHeaders.Add("Accept", "application/json");
+                }
+				);	
 
-			// instantiate depenedency injection concrete object
-			var serviceProvider = serviceCollection.BuildServiceProvider();
+            // instantiate depenedency injection concrete object
+            var serviceProvider = serviceCollection.BuildServiceProvider();
 
 			// start the application by getting the Application
 			// class from the required services, and run it.
