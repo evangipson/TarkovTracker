@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TarkovTracker.Base", "TarkovTracker.Base\TarkovTracker.Base.csproj", "{712B3765-8951-4795-9D42-C182E5C61D1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkovTracker.Domain", "TarkovTracker.Domain\TarkovTracker.Domain.csproj", "{8D06D856-3AF4-4B69-AD8D-ED20B631B9B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkovTracker.Logic", "TarkovTracker.Logic\TarkovTracker.Logic.csproj", "{4FCC79FA-70BC-4D03-9407-4973D95B5ACF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkovTracker.View", "TarkovTracker.View\TarkovTracker.View.csproj", "{D8CC769D-C85B-4E70-A6BC-154118736D97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{712B3765-8951-4795-9D42-C182E5C61D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712B3765-8951-4795-9D42-C182E5C61D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712B3765-8951-4795-9D42-C182E5C61D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712B3765-8951-4795-9D42-C182E5C61D1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D06D856-3AF4-4B69-AD8D-ED20B631B9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D06D856-3AF4-4B69-AD8D-ED20B631B9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D06D856-3AF4-4B69-AD8D-ED20B631B9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D06D856-3AF4-4B69-AD8D-ED20B631B9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FCC79FA-70BC-4D03-9407-4973D95B5ACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FCC79FA-70BC-4D03-9407-4973D95B5ACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FCC79FA-70BC-4D03-9407-4973D95B5ACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FCC79FA-70BC-4D03-9407-4973D95B5ACF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8CC769D-C85B-4E70-A6BC-154118736D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8CC769D-C85B-4E70-A6BC-154118736D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8CC769D-C85B-4E70-A6BC-154118736D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8CC769D-C85B-4E70-A6BC-154118736D97}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AF1E1916-57FA-4CFE-A50D-6C5A2336AF8B}
+	EndGlobalSection
+EndGlobal
