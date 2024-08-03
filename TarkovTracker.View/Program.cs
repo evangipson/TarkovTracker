@@ -28,13 +28,7 @@ namespace TarkovTracker.View
 			// add TarkovTracker services from Services and View using reflection
 			serviceCollection.AddServicesFromAssembly(Assembly.GetAssembly(typeof(IApplicationController)));
 			serviceCollection.AddServicesFromAssembly(Assembly.GetAssembly(typeof(IQueryService)));
-			serviceCollection.AddHttpClient(
-				"QueryClient",
-				client => 
-				{
-					client.DefaultRequestHeaders.Add("Accept", "application/json");
-                }
-				);	
+			serviceCollection.AddHttpClient();
 
             // instantiate depenedency injection concrete object
             var serviceProvider = serviceCollection.BuildServiceProvider();
