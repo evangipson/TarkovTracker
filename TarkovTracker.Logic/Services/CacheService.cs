@@ -26,17 +26,10 @@ namespace TarkovTracker.Logic.Services
 		{
 			_logger.LogInformation($"{nameof(Get)}: Attempting to retrieve cached value for the key \"{cacheKey}\".");
 
-			try
+			if (_memoryCache.TryGetValue(cacheKey, out CacheValueType? cachedValue))
 			{
-				if (_memoryCache.TryGetValue(cacheKey, out CacheValueType? cachedValue))
-				{
-					_logger.LogInformation($"{nameof(Get)}: Cached value retrieved successfully for the key \"{cacheKey}\".");
-					return cachedValue;
-				}
-			}
-			catch (Exception exception)
-			{
-				_logger.LogError(exception, $"{nameof(Get)}: Encountered an error getting cached value for key \"{cacheKey}\".");
+				_logger.LogInformation($"{nameof(Get)}: Cached value retrieved successfully for the key \"{cacheKey}\".");
+				return cachedValue;
 			}
 
 			_logger.LogWarning($"{nameof(Get)}: Cached value was not retrieved successfully for the key \"{cacheKey}\".");
