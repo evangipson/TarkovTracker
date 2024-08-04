@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
 using TarkovTracker.Base.DependencyInjection;
-using TarkovTracker.Domain.Models;
 using TarkovTracker.Logic.Services.Interfaces;
 using TarkovTracker.View.Controllers.Interfaces;
 
@@ -29,7 +28,10 @@ namespace TarkovTracker.View.Controllers
 
 			// run a query
 			_queryService.GetResult(string.Empty);
-			
+
+			// run the same query, but use cache to retrieve it.
+			_queryService.GetResult(string.Empty);
+
 			// run a search
 			//var result = _searchService.GetSearchResult<Map>("interchange");
 		}

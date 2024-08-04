@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 
 using TarkovTracker.Base.DependencyInjection;
 using TarkovTracker.Logic.Builders.Interfaces;
@@ -33,8 +34,11 @@ namespace TarkovTracker.View
 			// register IHttpClientFactory
 			serviceCollection.AddHttpClient();
 
-            // instantiate depenedency injection concrete object
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+			// register in-memory caching
+			serviceCollection.AddMemoryCache();
+
+			// instantiate dependency injection concrete object
+			var serviceProvider = serviceCollection.BuildServiceProvider();
 
 			// start the application by getting the Application
 			// class from the required services, and run it.
