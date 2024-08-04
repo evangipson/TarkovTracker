@@ -1,5 +1,6 @@
-﻿using System.Net.Http.Json;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 using TarkovTracker.Base.DependencyInjection;
 using TarkovTracker.Logic.Services.Interfaces;
 
@@ -29,17 +30,35 @@ namespace TarkovTracker.Logic.Services
             _logger.LogInformation("I'm in RunTestQuery");
             var data = new Dictionary<string, string>
             {
-                ["query"] = "{items(name: \"m855a1\") { id name shortName }}"
-			};
+                ["query"] = @"{
+                    task(id: ""5b478eca86f7744642012254"")
+                    {
+                        id
+                        name
+                        wikiLink
+                        trader {
+                            name
+                        }
+                        objectives{
+                           maps {
+                               id
+                               name
+                           }
+                           type
+                           description
+                        }
+                    }
+                }"
+            };
 
             _logger.LogInformation("I'm about to POST to tarkov API.");
             var httpResponse = Task.Run(() => _httpClient.PostAsJsonAsync("https://api.tarkov.dev/graphql", data)).GetAwaiter().GetResult();
-            
-            _logger.LogInformation("I posted and am now awaiting the content.");
-            var responseContent = Task.Run(() => httpResponse.Content.ReadAsStringAsync()).GetAwaiter().GetResult();
 
-            _logger.LogInformation("I got the content:");
-            _logger.LogInformation(responseContent);
-        }
+                _logger.LogInformation("I posted and am now awaiting the content.");
+                var responseContent = Task.Run(() => httpResponse.Content.ReadAsStringAsync()).GetAwaiter().GetResult();
+
+                _logger.LogInformation("I got the content:");
+                _logger.LogInformation(responseContent);
+            }
     }
-}
+    }
