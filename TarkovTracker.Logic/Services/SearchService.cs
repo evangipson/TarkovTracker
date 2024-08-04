@@ -7,9 +7,10 @@ namespace TarkovTracker.Logic.Services
 	[Service(typeof(ISearchService))]
 	public class SearchService : ISearchService
 	{
-		public List<ResultType> GetSearchResult<ResultType>(string query)
+		public List<ResultType> GetSearchResult<ResultType>(List<ResultType> results, Func<ResultType, bool> filter)
 		{
-			return [];
+            return results.Where(result => filter(result)).ToList();
 		}
+
 	}
 }

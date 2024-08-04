@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-
 using TarkovTracker.Base.DependencyInjection;
 using TarkovTracker.Logic.Builders.Interfaces;
 using TarkovTracker.Logic.Services.Interfaces;
@@ -24,7 +23,12 @@ namespace TarkovTracker.View.Controllers
 			_searchService = searchService;
 		}
 
-		public void Run()
+        public bool FilterTaskByName(Domain.Models.Task task)
+        {
+            return task.Name.Contains("Vitamins");
+        }
+
+        public void Run()
 		{
 			// Run the application logic here
 			_logger.LogInformation("Started the application.");
@@ -41,7 +45,7 @@ namespace TarkovTracker.View.Controllers
 			_queryService.GetResult(fiveTaskIdsQuery);
 
 			// run a search
-			//var result = _searchService.GetSearchResult<Map>("interchange");
+			var result = _searchService.GetSearchResult<Task>();
 		}
 	}
 }
