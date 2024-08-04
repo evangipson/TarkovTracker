@@ -1,47 +1,44 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 
 using TarkovTracker.Base.DependencyInjection;
-using TarkovTracker.Logic.Builders.Interfaces;
 using TarkovTracker.Logic.Services.Interfaces;
 
 namespace TarkovTracker.Logic.Services
 {
 	/// <inheritdoc cref="IQueryService"/>
-	[Service(typeof(IQueryService))]
+	[Service(typeof(IQueryService), Lifetime = ServiceLifetime.Transient)]
 	public class QueryService : IQueryService
 	{
 		private readonly ILogger<QueryService> _logger;
 		private readonly HttpClient _httpClient;
-		private readonly IQueryBuilder _queryBuilder;
 		private readonly ICacheService _cacheService;
 
-		public QueryService(ILogger<QueryService> logger, IHttpClientFactory httpClientFactory, IQueryBuilder queryBuilder, ICacheService cacheService)
+		public QueryService(ILogger<QueryService> logger, IHttpClientFactory httpClientFactory, ICacheService cacheService)
 		{
 			_logger = logger;
 			_httpClient = httpClientFactory.CreateClient();
-			_queryBuilder = queryBuilder;
 			_cacheService = cacheService;
 		}
 
 		public string GetResult(string query)
 		{
-			var fiveTaskIdsQuery = _queryBuilder.Create()
-				.Add(["tasks(limit:5, offset:105)", "id"])
-				.Build();
-
-			if (_cacheService.Exists(fiveTaskIdsQuery))
+			if (string.IsNullOrEmpty(query))
 			{
-				var cachedQueryResult = _cacheService.Get<string>(fiveTaskIdsQuery);
-				_logger.LogInformation($"{nameof(GetResult)}: had the query result in cache, so returning the stored value:");
-				_logger.LogInformation($"{cachedQueryResult}");
+				_logger.LogInformation($"{nameof(GetResult)}: Attempted to get a query result, but no query was provided.");
+				return string.Empty;
+			}
+
+			if (_cacheService.Exists(query))
+			{
+				var cachedQueryResult = _cacheService.Get<string>(query);
+				_logger.LogInformation($"{nameof(GetResult)}: had the query result in cache, so returning the stored value:\n{cachedQueryResult}");
 				return cachedQueryResult ?? string.Empty;
 			}
 
 			_logger.LogInformation($"{nameof(GetResult)}: No query found in cache, so instead running an actual query.");
-			RunQuery(fiveTaskIdsQuery);
-
-			return string.Empty;
+			return GetResultFromQuery(query);
 		}
 
 		/// <summary>
@@ -51,26 +48,24 @@ namespace TarkovTracker.Logic.Services
 		/// <param name="query">
 		/// The query to get the result of.
 		/// </param>
-		private void RunQuery(string query)
+		private string GetResultFromQuery(string query)
 		{
-			var postQuery = new Dictionary<string, string>
-			{
-				["query"] = query
-			};
-
-			_logger.LogInformation($"{nameof(RunQuery)}: POSTing to tarkov API.");
+			var postQuery = new Dictionary<string, string>{ ["query"] = query };
 			var httpResponse = Task.Run(() => _httpClient.PostAsJsonAsync("https://api.tarkov.dev/graphql", postQuery))
 				.GetAwaiter()
 				.GetResult();
 
-			_logger.LogInformation($"{nameof(RunQuery)}: Posted and am now awaiting the content.");
 			var responseContent = Task.Run(() => httpResponse.Content.ReadAsStringAsync())
 				.GetAwaiter()
 				.GetResult();
 
-			_logger.LogInformation($"{nameof(RunQuery)}: Got the content, storing in cache for later:");
-			_logger.LogInformation($"{responseContent}");
-			_cacheService.Set(query, responseContent);
+			_logger.LogInformation($"{nameof(GetResultFromQuery)}: Got content, attemping to store in cache for later:\n{responseContent}");
+			if(!_cacheService.Set(query, responseContent))
+			{
+				_logger.LogWarning($"{nameof(GetResultFromQuery)}: Couldn't store response in cache.");
+			}
+
+			return responseContent;
 		}
 	}
 }

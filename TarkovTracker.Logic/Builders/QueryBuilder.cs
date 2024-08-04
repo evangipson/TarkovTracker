@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using TarkovTracker.Base.DependencyInjection;
 using TarkovTracker.Logic.Builders.Interfaces;
@@ -6,21 +7,21 @@ using TarkovTracker.Logic.Builders.Interfaces;
 namespace TarkovTracker.Logic.Builders
 {
 	/// <inheritdoc cref="IQueryBuilder"/>
-	[Service(typeof(IQueryBuilder))]
+	[Service(typeof(IQueryBuilder), Lifetime = ServiceLifetime.Transient)]
 	public class QueryBuilder : IQueryBuilder
 	{
 		private readonly ILogger<QueryBuilder> _logger;
-		private List<string> _query;
+
+		private List<string>? _query;
+		private List<string> Query => _query ??= [];
 
 		public QueryBuilder(ILogger<QueryBuilder> logger)
 		{
 			_logger = logger;
-			_query = [];
 		}
 
 		public IQueryBuilder Create()
 		{
-			_query = ["query"];
 			return this;
 		}
 
@@ -32,6 +33,7 @@ namespace TarkovTracker.Logic.Builders
 				return this;
 			}
 
+			Query.Add(lexeme);
 			return this;
 		}
 
@@ -51,13 +53,13 @@ namespace TarkovTracker.Logic.Builders
 
 			var parentLexeme = lexemes.First();
 			var childLexemes = lexemes.Where(lexeme => lexeme != lexemes.First());
-			_query.Add($"{{{parentLexeme}{{{string.Join(" ", childLexemes)}}}}}");
+			Query.Add($"{parentLexeme}{{{string.Join(" ", childLexemes)}}}");
 			return this;
 		}
 
 		public string Build()
 		{
-			return string.Join(Environment.NewLine, _query);
+			return $"{{{string.Join(Environment.NewLine, Query)}}}";
 		}
 	}
 }

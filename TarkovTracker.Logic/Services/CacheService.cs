@@ -63,7 +63,7 @@ namespace TarkovTracker.Logic.Services
 				_logger.LogError(exception, $"{nameof(Set)}: Encountered an error setting cache for key \"{cacheKey}\".");
 			}
 
-			return cacheSetValue == null;
+			return cacheSetValue != null;
 		}
 	}
 }
